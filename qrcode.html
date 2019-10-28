@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Instascan</title>
+    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js" ></script>
+  </head>
+  <body>
+    <video id="preview"></video>
+    <script>
+        let scanner = new Instascan.Scanner(
+            {
+                video: document.getElementById('preview')
+            }
+        );
+        scanner.addListener('scan', function(content) {
+            alert('Codigo QR escaneado: ' + content);
+            window.open(content, "_blank");
+        });
+        Instascan.Camera.getCameras().then(cameras =>
+        {
+            console.log(cameras.length);
+            if(cameras.length >= 3){
+                scanner.start(cameras[1]);
+            } else if (cameras.length > 0 && cameras.length < 3) {
+                scanner.start(cameras[0]);
+            } else {
+                console.error("noo existe camera!");
+            }
+        });
+    </script>
+
+ </body>
+</html>
